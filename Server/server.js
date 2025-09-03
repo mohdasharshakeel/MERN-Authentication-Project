@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser";
 
 
 import connectDB from "./config/mongodb.js";
-import authRuter from "./routes/authRoute.js"
+import authRouter from "./routes/authRoute.js";
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -17,7 +17,7 @@ app.use(cookieParser());
 app.use(cors({credientials:true}))
 
 //! API endpoints
-app.use('/api/auth', authRuter )
+app.use("/api/auth", authRouter);
 
 
 app.get('/',(req, res)=>{
