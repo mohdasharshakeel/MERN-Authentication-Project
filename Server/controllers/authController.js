@@ -26,6 +26,14 @@ export const register = async (req, res) => {
     });
 
     // sending welcome message
+    const mailOptions = {
+      from: process.env.SENDER_EMAIL,
+      to: email,
+      subject: 'welcome On Mungiwara Ship [ straw hat pirate ]',
+      text : `hahaha , thanks for joining my crew, Now you are the member of Yonko luffy's crew`
+    }
+
+
     return res.json({ success: true, message: "Register successful" });
   } catch (error) {
     res, json({ success: false, message: error.message });
