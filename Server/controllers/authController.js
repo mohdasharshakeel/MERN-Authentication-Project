@@ -30,7 +30,7 @@ export const register = async (req, res) => {
       from: process.env.SENDER_EMAIL,
       to: email,
       subject: 'welcome On Mungiwara Ship [ straw hat pirate ]',
-      text : `hahaha , thanks for joining my crew, Now you are the member of Yonko luffy's crew`
+      text : `hahaha , thanks for joining my crew, Now you are the member of Yonko luffy's crew your email is ${email}`
     }
 
 
