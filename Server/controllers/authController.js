@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import userModel from "../models/userModel.js";
+import transporter from "../config/nodemailer.js";
 
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -33,6 +34,7 @@ export const register = async (req, res) => {
       text : `hahaha , thanks for joining my crew, Now you are the member of Yonko luffy's crew your email is ${email}`
     }
 
+    await transporter.sendMail(mailOptions)
 
     return res.json({ success: true, message: "Register successful" });
   } catch (error) {
