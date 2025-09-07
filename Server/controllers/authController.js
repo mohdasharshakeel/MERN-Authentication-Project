@@ -26,7 +26,7 @@ export const register = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    // sending welcome message
+    // sending welcome message 
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
       to: email,
