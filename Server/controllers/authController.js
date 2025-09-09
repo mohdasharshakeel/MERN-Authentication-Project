@@ -39,7 +39,7 @@ export const register = async (req, res) => {
 
     return res.json({ success: true, message: "Register successful" });
   } catch (error) {
-    res, json({ success: false, message: error.message });
+    res.json({ success: false, message: error.message });
   }
 };
 
