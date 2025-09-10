@@ -98,9 +98,20 @@ export const logout = async (req, res) => {
   }
 }
 
+//! send verifiton OTP to the user's email 
 export const sendVerifyOtp = async (req, res) => {
   try {
-    
+    const { userID } = req.body;
+    const user = await userModel.findById(userID);
+    if (user.isAccountVerified) {
+      return res.json({success:false, message: 'Account already verified'})
+    }
+     
+  
+
+    const otp = String(Math.floor(100000 + Math.random() * 900000))
+    user.verifyOTP = otp 
+
   } catch (error) {
     res.json({success:false, message: error.message})
   }
