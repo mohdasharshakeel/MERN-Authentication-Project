@@ -16,6 +16,8 @@ const userAuth = async (req, res, next) => {
         } else {
              return res.json({success:false, message:"Not Authorized Login again"})
         }
+
+        next();
         
     } catch (error) {
         res.json({
