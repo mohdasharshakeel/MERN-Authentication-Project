@@ -3,3 +3,5 @@ readme file created
 email verification added
 OTP verification
 plan is ready
+password updated successfully ,
+    
