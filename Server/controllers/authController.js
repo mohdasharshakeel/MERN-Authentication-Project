@@ -136,7 +136,8 @@ export const sendVerifyOtp = async (req, res) => {
 
 // Verify Email
 export const verifyEmail = async (req, res) => {
-  const { userId, otp } = req.body;
+  const { otp } = req.body;
+  const { id: userId } = req.user; // ✅ middleware se id li
 
   if (!userId || !otp) {
     return res.json({ success: false, message: "Missing details" });
@@ -144,11 +145,9 @@ export const verifyEmail = async (req, res) => {
 
   try {
     const user = await userModel.findById(userId);
-    if (!user) {
-      return res.json({ success: false, message: "User not found" });
-    }
+    if (!user) return res.json({ success: false, message: "User not found" });
 
-    if (user.verifyOTP === "" || user.verifyOTP !== otp) {
+    if (!user.verifyOTP || user.verifyOTP !== otp) {
       return res.json({ success: false, message: "Invalid OTP" });
     }
 
@@ -159,8 +158,8 @@ export const verifyEmail = async (req, res) => {
     user.isAccountVerified = true;
     user.verifyOTP = "";
     user.verifyOtpExpireAt = 0;
-
     await user.save();
+
     return res.json({ success: true, message: "Email verified successfully" });
   } catch (error) {
     return res.json({ success: false, message: error.message });
