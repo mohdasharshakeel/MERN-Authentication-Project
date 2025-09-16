@@ -199,3 +199,29 @@ export const sendResetOtp = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
+
+//! Reset User password 
+export const resetPassword = async (req, res) => {
+  const { email, otp, newPassword } = req.body;
+
+  if (!email || !otp || !newPassword) {
+    return res.json({success:false , message:"Email, OTP, and new password are requried"})
+  }
+   
+  try {
+
+    const user = await userModel.findOne({ email })
+    if (!user) {
+      return res.json({success:false, message:"user not found"})
+    }
+    if (user.resetOtp === '' || user.resetOtp !== otp) {
+      return res.json({success:false, message:"Invalid Otp "})
+    }
+    
+    
+  } catch (error) {
+
+    res.json({success:false, message:error.message})
+  }
+}
