@@ -113,20 +113,7 @@ export const sendVerifyOtp = async (req, res) => {
       return res.json({ success: false, message: "Account already verified" });
     }
 
-    const otp = String(Math.floor(100000 + Math.random() * 900000));
-    user.verifyOTP = otp;
-    user.verifyOtpExpireAt = Date.now() + 24 * 60 * 60 * 1000; // 24hr
-    await user.save();
-
-    // Send OTP Email
-    const mailOptions = {
-      from: process.env.SENDER_EMAIL,
-      to: user.email,
-      subject: "Verify your Email - Mungiwara Ship",
-      text: `Your OTP for email verification is: ${otp}. It will expire in 24 hours.`,
-    };
-
-    await transporter.sendMail(mailOptions);
+   
 
     res.json({ success: true, message: "Verification OTP sent to email" });
   } catch (error) {
@@ -166,14 +153,49 @@ export const verifyEmail = async (req, res) => {
   }
 };
 
-// check if user is authenticated 
+//! check if user is authenticated
 
 export const isAuthenticated = async (req, res) => {
   try {
-    return res.json({success:true})
-    
+    return res.json({ success: true });
   } catch (error) {
-    res.json({success:false, message:error.message})
-    
+    res.json({ success: false, message: error.message });
   }
-}
+};
+
+//! send password reset OTP
+
+export const sendResetOtp = async (req, res) => {
+  const { email } = req.body;
+  if (!email) {
+    return res.json({ success: false, message: "email is required" });
+  }
+
+  try {
+    const user = await userModel.findOne({ email })
+    if (!user) {
+      return res.json({success:false, message:"user not found with is email "})
+    }
+
+      const otp = String(Math.floor(100000 + Math.random() * 900000));
+      user.resetOtp = otp;
+      user.resetOtpExpireAt = Date.now() + 15  *  60 * 1000; // 15minuts
+      await user.save();
+
+      // Send OTP Email
+      const mailOptions = {
+        from: process.env.SENDER_EMAIL,
+        to: user.email,
+        subject: "Password reset OTP",
+        text: `Your OTP for resetting your password is ${otp}. Use this otp to reset your password , this otp is valid for 15 minuts`,
+      };
+
+    await transporter.sendMail(mailOptions);
+
+    return res.json({success:true, message:"OTP send sucessfully"})
+    
+
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
